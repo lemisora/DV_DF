@@ -20,4 +20,5 @@ int init_table(FILE* file, tabla* tabla_paginas, unsigned int size, unsigned int
 unsigned int getMarco(tabla t, unsigned int index);   //Función para encontrar el número de marco dado un índice de página
 int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV);   //Función para traducir memoria virtual a física
 void print_table(tabla t, unsigned int size);
+void print_especific_table(tabla t, unsigned int index);
 #endif

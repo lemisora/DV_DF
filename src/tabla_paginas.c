@@ -66,3 +66,14 @@ void print_table(tabla t, unsigned int size){
             t[i].n_frame);
     }
 }
+
+void print_especific_table(tabla t, unsigned int index){
+    printf("|A|R|M|P|C|FRAME|\n");
+    printf("|%d|%d|%d|%d|%d|%u|\n",
+        t[index].b_permiso,
+        t[index].b_ref,
+        t[index].b_mod,
+        t[index].b_pres_aus,
+        t[index].b_cache,
+        t[index].n_frame);
+}

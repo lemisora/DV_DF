@@ -68,7 +68,7 @@ void printMenu(){
     printf("2. Cargar tabla de páginas\n");
     printf("3. Imprimir tabla de páginas\n");
     printf("4. Traducir dirección virtual a física\n");
-    //printf("5. Imprimir entrada específica de tabla de páginas\n");
+    printf("5. Imprimir entrada específica de tabla de páginas\n");
     printf("0. Salir\n");
     printf("Ingrese la opción que desea: ");
 }
@@ -83,13 +83,16 @@ int main(int argc, char** argv){
     FILE* archivo = NULL;
     tabla page_table = NULL;
     char binaryString[33];
+
     unsigned int num_pag = 0;
     unsigned int num_marcos = 0;
     unsigned int tam_pag = 0;
     unsigned int bits_desp = 0;
     unsigned int DV = 0;
     unsigned int DF = 0;
+
     int opc;
+    unsigned int opc_num_pag = 0;
 
     while(true){
         printMenu();
@@ -98,6 +101,7 @@ int main(int argc, char** argv){
             printf("Saliendo del programa\n");
             break;
         }else if(opc == 1){
+            // la generacion de tabla si sirve uwu
             printf("------------ Generación de entradas ------------\n");
             solicitaDatos(&tam_pag, &num_pag, &num_marcos);
             archivo = fopen(argv[1], "w");
@@ -108,6 +112,7 @@ int main(int argc, char** argv){
                 perror("Error al abrir el archivo en el que se guardarán las entradas generadas\n");
             }
         }else if(opc == 2){
+            // La tabla no carga a la primera, se tiene que ejecutar dos veces esta funcion
             printf("------------ Carga de tabla ------------\n");
             archivo = fopen(argv[1], "r");
             if(archivo == NULL){
@@ -119,6 +124,7 @@ int main(int argc, char** argv){
             } else {
                 printf("Se ha cargado correctamente la tabla de páginas\n");
                 table_loaded = true;
+                table_generated = true;
             }
         }else if(opc == 3){
             printf("------------ Impresión de tabla ------------\n");
@@ -138,6 +144,23 @@ int main(int argc, char** argv){
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
                 printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
                 printBinary(DF);
+            }
+        }
+        else if(opc == 5){
+            printf("------------ Imprimir una Pagina ------------\n");
+            if(!table_loaded){
+                printf("¡Primero necesita cargar la tabla de páginas!\n");
+                continue;
+            } else {
+                printf("Ingrese el numero de pagina: ");
+                scanf("%u", &opc_num_pag);
+                if (opc_num_pag >= num_pag){
+                    printf("Número de página inválido\n");
+                    continue;
+                }else
+                {
+                    print_especific_table(page_table, opc_num_pag);
+                }
             }
         }else{
             printf("Opción inválida\n¡Inténtelo nuevamente!\n");
