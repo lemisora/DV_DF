@@ -5,6 +5,9 @@ executable(
   'traductor',
   'src/main.c',
   'src/tabla_paginas.h',
+  'src/tabla_paginas.c',
+  'src/file_entries.h',
+  'src/file_entries.c',
   link_args: bibliotecas_adicionales,
   install: true,
 )
