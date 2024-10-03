@@ -1,8 +1,10 @@
 #include "tabla_paginas.h"
 #include "file_entries.h"
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <limits.h>
+
 
 int add_entry(tabla table, table_entry_t entrada, int index){
     table[index] = entrada;
@@ -76,4 +78,52 @@ void print_especific_table(tabla t, unsigned int index){
         t[index].b_pres_aus,
         t[index].b_cache,
         t[index].n_frame);
+
+    
+}
+
+void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_marco){
+    printf("|A|R|M|P|C|FRAME_Binary|\n");
+    printf("|%d|%d|%d|%d|%d",
+        t[index].b_permiso,
+        t[index].b_ref,
+        t[index].b_mod,
+        t[index].b_pres_aus,
+        t[index].b_cache);
+    printf("|");
+    print_binary(t[index].n_frame, size_marco);
+    printf("|");
+}
+
+void print_binary(unsigned long int value, unsigned int page_size) {
+    for (int i = (int)log2(page_size); i >= 0; i--) {
+        if (i % 4 == 3) {
+            printf(" ");
+        }
+        printf("%lu", (value >> i) & 1UL);
+    }
+    printf("\n");
+}
+
+unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned int marco_size, unsigned int page_size){
+    unsigned long int binary = 0;
+    unsigned long int size_bits = (unsigned int)log2(marco_size);
+    unsigned long int frame_mask = (1UL << size_bits) - 1; // Create a mask with size_bits number of 1s
+
+    /* printf("Size bits: %lu frame_mask: %lu\n", size_bits, frame_mask);
+ */
+    binary |= (t[index].b_permiso & 1UL) << 4; 
+    binary |= (t[index].b_ref & 1UL) << 3;    
+    binary |= (t[index].b_mod & 1UL) << 2;     
+    binary |= (t[index].b_pres_aus & 1UL) << 1;
+    binary |= (t[index].b_cache & 1UL) << 0;   
+    binary <<= size_bits; // Shift the bits size bits
+    
+    binary |= (t[index].n_frame & frame_mask) << 0; // Set the remaining bits for n_frame
+    /* print_binary(binary,page_size*marco_size);
+    printf("%lu\n", binary);
+    
+    print_specific_table_binary(t, index, page_size); */
+
+    return binary;
 }
