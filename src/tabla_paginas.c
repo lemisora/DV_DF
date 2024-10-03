@@ -92,17 +92,16 @@ void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_
         t[index].b_cache);
     printf("|");
     print_binary(t[index].n_frame, size_marco);
-    printf("|");
+    printf("|\n");
 }
 
 void print_binary(unsigned long int value, unsigned int page_size) {
-    for (int i = (int)log2(page_size); i >= 0; i--) {
-        if (i % 4 == 3) {
+    for (int i = (int)log2(page_size)-1; i >= 0; i--) {
+        if (i % 4 == 3 && i != 0) {
             printf(" ");
         }
         printf("%lu", (value >> i) & 1UL);
     }
-    printf("\n");
 }
 
 unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned int marco_size, unsigned int page_size){

@@ -22,5 +22,6 @@ int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_
 void print_binary(unsigned long int value, unsigned int page_size);
 void print_table(tabla t, unsigned int size);
 void print_especific_table(tabla t, unsigned int index);
+void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_marco);
 unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned int marco_size, unsigned int page_size);
 #endif

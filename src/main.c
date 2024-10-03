@@ -151,7 +151,7 @@ int main(int argc, char** argv){
                     continue;
                 }else
                 {
-                    print_especific_table(page_table, opc_num_pag);
+                    print_specific_table_binary(page_table, opc_num_pag, num_marcos);
                     DV = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
                     printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
                     printBinary(DV);
