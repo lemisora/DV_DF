@@ -25,21 +25,13 @@ bool table_loaded = false;
 */
 
 void printBinary(unsigned int num) {
-    unsigned int mask = 1 << 31;  // Comenzamos con el bit más significativo
-    int printed = 0;
-
-    while (mask) {
-        if (num & mask) {
-            printf("1");
-            printed = 1;
-        } else if (printed) {
-            printf("0");
+    for (int i = 31; i >= 0; i--) {
+        if (i % 4 == 3 && i != 31)
+        {
+            printf(" ");
         }
-        mask >>= 1;  // Desplazamos la máscara hacia la derecha
-    }
-
-    if (!printed) {
-        printf("0");  // Si el número es 0
+        
+        printf("%d", (num >> i) & 1);
     }
     printf("\n");
 }
@@ -160,6 +152,13 @@ int main(int argc, char** argv){
                 }else
                 {
                     print_especific_table(page_table, opc_num_pag);
+                    DV = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
+                    printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
+                    printBinary(DV);
+                    bits_desp = (unsigned int) log2(tam_pag*num_marcos);
+                    DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
+                    printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
+                    printBinary(DF);
                 }
             }
         }else{
