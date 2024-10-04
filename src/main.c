@@ -103,24 +103,34 @@ int main(int argc, char** argv){
             } else {
                 perror("Error al abrir el archivo en el que se guardarán las entradas generadas\n");
             }
+            fclose(archivo);
         }else if(opc == 2){
-            // La tabla no carga a la primera, se tiene que ejecutar dos veces esta funcion
             printf("------------ Carga de tabla ------------\n");
             archivo = fopen(argv[1], "r");
             if(archivo == NULL){
                 perror("Error al abrir el archivo del que se cargará la tabla, posiblemente aún no se ha creado");
                 continue;
             }
-            if(init_table(archivo, &page_table, num_pag, &tam_pag, &num_pag, &num_marcos)){
-                printf("Inténtelo nuevamente\n");
-            } else {
+
+            // obtener size = num_pag del archivo de texto
+            if (get_num_page(archivo, &num_pag, &tam_pag, &num_marcos)){
+                printf("Inténtelo nuevamente\n\tFallo al obtener primer header del archivo\n");
+            } else{
+                fclose(archivo);
+                archivo = fopen(argv[1], "r");
+            } if(init_table(archivo, &page_table, num_pag, &tam_pag, &num_pag, &num_marcos)){
+                    printf("Inténtelo nuevamente\n\tFallo al leer la tabla\n");
+                }
+            else {
                 printf("Se ha cargado correctamente la tabla de páginas\n");
                 table_loaded = true;
                 table_generated = true;
             }
+            fclose(archivo);
         }else if(opc == 3){
             printf("------------ Impresión de tabla ------------\n");
-            print_table(page_table, num_pag);
+            //print_table(page_table, num_pag);
+            print_table_binary(page_table, num_pag, num_marcos,1);
         }else if(opc == 4){
             printf("------------ Traducción de direcciones ------------\n");
             if(!table_loaded){

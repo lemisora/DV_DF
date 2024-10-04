@@ -11,16 +11,21 @@ int add_entry(tabla table, table_entry_t entrada, int index){
     return EXIT_SUCCESS;
 }
 
+int get_num_page(FILE *archivo,unsigned int* num_pag, unsigned int* tam_pag, unsigned int* num_marcos){
+    leer_primera_linea(archivo, tam_pag, num_pag, num_marcos);
+    return EXIT_SUCCESS;
+}
+
 int init_table(FILE* file, tabla* tabla_paginas, unsigned int size, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
     *tabla_paginas = (tabla)malloc(sizeof(table_entry_t)*size);
     if(tabla_paginas == NULL){
         perror("No se pudo reservar memoria para la tabla de páginas");
-        fclose(file);
+        //fclose(file);
         return EXIT_FAILURE;
     }
     /* Añadir entradas */
     leer(file, tabla_paginas, size, tam_pag, num_pag, num_marcos);
-    fclose(file);
+    //fclose(file);
     return EXIT_SUCCESS;
 }
 
@@ -66,6 +71,33 @@ void print_table(tabla t, unsigned int size){
             t[i].b_pres_aus,
             t[i].b_cache,
             t[i].n_frame);
+    }
+}
+
+void print_table_binary(tabla t, unsigned int size, unsigned int marco_size, int print_decimal){
+    if (print_decimal)
+    {
+        printf("|i|\t|A|R|M|P|C|FRAME_BINARY|\t|FRAME_DECIMAL|\n\n");
+    }else{
+        printf("|i|\t|A|R|M|P|C|FRAME_BINARY|\n\n");
+    }
+    
+    for(int i = 0; i < size; i++){
+        printf("|%d|\t|%d|%d|%d|%d|%d",
+            i,
+            t[i].b_permiso,
+            t[i].b_ref,
+            t[i].b_mod,
+            t[i].b_pres_aus,
+            t[i].b_cache);
+        printf("|");
+        print_binary(t[i].n_frame, marco_size);
+
+        if(print_decimal){
+            printf("|\t|%u", t[i].n_frame);
+        }
+
+        printf("|\n");
     }
 }
 
