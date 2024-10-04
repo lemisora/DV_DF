@@ -103,7 +103,7 @@ int main(int argc, char** argv){
             } else {
                 perror("Error al abrir el archivo en el que se guardarán las entradas generadas\n");
             }
-            fclose(archivo);
+            // fclose(archivo);
         }else if(opc == 2){
             printf("------------ Carga de tabla ------------\n");
             archivo = fopen(argv[1], "r");
