@@ -59,6 +59,7 @@ int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_
     DF |= desp;//Encender los bits del desplazamiento
 
     return DF;
+    
 }
 
 void print_table(tabla t, unsigned int size){
@@ -151,10 +152,7 @@ unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned i
     binary <<= size_bits; // Shift the bits size bits
     
     binary |= (t[index].n_frame & frame_mask) << 0; // Set the remaining bits for n_frame
-    /* print_binary(binary,page_size*marco_size);
-    printf("%lu\n", binary);
-    
-    print_specific_table_binary(t, index, page_size); */
+
 
     return binary;
 }

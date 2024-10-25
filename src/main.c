@@ -161,14 +161,16 @@ int main(int argc, char** argv){
                     continue;
                 }else
                 {
-                    print_specific_table_binary(page_table, opc_num_pag, num_marcos);
-                    DV = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
-                    printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
-                    printBinary(DV, (int) log2(num_marcos * pow(2, 5)));
-                    bits_desp = (unsigned int) log2(tam_pag*num_marcos);
-                    DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
-                    printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                    printBinary(DF, num_pag);
+                    DV = opc_num_pag << bits_desp;
+                    printf("Direccion Virtual: %u \nEn hexadecimal: 0x%X\n En Binario: ", opc_num_pag, opc_num_pag);
+                    printBinary(opc_num_pag, (int) log2(tam_pag*num_pag));
+
+                    DF = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
+                    printf("\n\nDirección Fisica\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
+                    printBinary(DF, (int) log2(num_marcos * pow(2, 5)));
+                    // print_specific_table_binary(page_table, opc_num_pag, num_marcos);
+
+                    
                 }
             }
         }else{
