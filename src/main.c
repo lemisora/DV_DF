@@ -36,6 +36,26 @@ void printBinary(unsigned int num, int bits_to_print) {
     printf("\n");
 }
 
+void printBinary_Lemisora(unsigned int num) {
+    unsigned int mask = 1 << 31;  // Comenzamos con el bit más significativo
+    int printed = 0;
+
+    while (mask) {
+        if (num & mask) {
+            printf("1");
+            printed = 1;
+        } else if (printed) {
+            printf("0");
+        }
+        mask >>= 1;  // Desplazamos la máscara hacia la derecha
+    }
+
+    if (!printed) {
+        printf("0");  // Si el número es 0
+    }
+    printf("\n");
+}
+
 void solicitaDatos(unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
     printf("Ingrese el tamaño de página que desea: ");
     scanf("%u", tam_pag);
@@ -145,7 +165,7 @@ int main(int argc, char** argv){
                 bits_desp = (unsigned int) log2(tam_pag);
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
                 printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                printBinary(DF, (int) log2(num_marcos * num_pag));
+                printBinary_Lemisora(DF);
             }
         }
         else if(opc == 5){
