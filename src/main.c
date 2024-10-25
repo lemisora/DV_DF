@@ -141,11 +141,11 @@ int main(int argc, char** argv){
                 scanf("%32s", binaryString);
                 DV = strtoul(binaryString, NULL, 2);
                 printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
-                printBinary(DV, (int) log2(tam_pag*num_marcos));
+                printBinary(DV, (int) log2(tam_pag*num_pag));
                 bits_desp = (unsigned int) log2(tam_pag);
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
                 printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                printBinary(DF, num_pag);
+                printBinary(DF, (int) log2(num_marcos * pow(2, 5)));
             }
         }
         else if(opc == 5){
