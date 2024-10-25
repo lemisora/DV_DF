@@ -145,7 +145,7 @@ int main(int argc, char** argv){
                 bits_desp = (unsigned int) log2(tam_pag);
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
                 printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                printBinary(DF, (int) log2(num_marcos * pow(2, 5)));
+                printBinary(DF, (int) log2(num_marcos * num_pag));
             }
         }
         else if(opc == 5){
