@@ -2,7 +2,11 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
+
+void leer_primera_linea(FILE* file, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
+    fscanf(file, "%*s %u %*s %u %*s %u", tam_pag, num_pag, num_marcos);
+}
+
 void leer(FILE* file, tabla* t, unsigned int size, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
     int b_permiso = 0;
     int b_ref = 0;
