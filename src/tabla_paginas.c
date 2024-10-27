@@ -5,9 +5,8 @@
 #include <stdlib.h>
 #include <limits.h>
 
-int add_entry(tabla table, table_entry_t entrada, int index){
+void add_entry(tabla table, table_entry_t entrada, int index){
     table[index] = entrada;
-    return EXIT_SUCCESS;
 }
 
 int get_num_page(FILE *archivo,unsigned int* num_pag, unsigned int* tam_pag, unsigned int* num_marcos){
