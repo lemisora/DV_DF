@@ -2,7 +2,6 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
 
 void leer_primera_linea(FILE* file, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
     fscanf(file, "%*s %u %*s %u %*s %u", tam_pag, num_pag, num_marcos);

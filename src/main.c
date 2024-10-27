@@ -26,11 +26,9 @@ bool table_loaded = false;
 
 void printBinary(unsigned int num, int bits_to_print) {
     for (int i = bits_to_print - 1; i >= 0; i--) {
-        if (i % 4 == 3 && i != bits_to_print - 1)
-        {
+        if (i % 4 == 3 && i != bits_to_print - 1){
             printf(" ");
         }
-
         printf("%d", (num >> i) & 1);
     }
     printf("\n");
@@ -113,7 +111,6 @@ int main(int argc, char** argv){
             printf("Saliendo del programa\n");
             break;
         }else if(opc == 1){
-            // la generacion de tabla si sirve uwu
             printf("------------ Generación de entradas ------------\n");
             solicitaDatos(&tam_pag, &num_pag, &num_marcos);
             archivo = fopen(argv[1], "w");
@@ -140,8 +137,7 @@ int main(int argc, char** argv){
                 archivo = fopen(argv[1], "r");
             } if(init_table(archivo, &page_table, num_pag, &tam_pag, &num_pag, &num_marcos)){
                     printf("Inténtelo nuevamente\n\tFallo al leer la tabla\n");
-                }
-            else {
+            } else {
                 printf("Se ha cargado correctamente la tabla de páginas\n");
                 table_loaded = true;
                 table_generated = true;
@@ -179,8 +175,7 @@ int main(int argc, char** argv){
                 if (opc_num_pag >= num_pag){
                     printf("Número de página inválido\n");
                     continue;
-                }else
-                {
+                } else {
                     DV = opc_num_pag << bits_desp;
                     // printf("Direccion Virtual: %u \nEn hexadecimal: 0x%X\n En Binario: ", opc_num_pag, opc_num_pag);
                     // printBinary(opc_num_pag, (int) log2(tam_pag*num_pag));
@@ -189,8 +184,6 @@ int main(int argc, char** argv){
                     // printf("\n\nDirección Fisica\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
                     // printBinary(DF, (int) log2(num_marcos * pow(2, 5)));
                     print_specific_table_binary(page_table, opc_num_pag, num_marcos);
-
-
                 }
             }
         }else{

@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-
 int add_entry(tabla table, table_entry_t entrada, int index){
     table[index] = entrada;
     return EXIT_SUCCESS;
@@ -59,7 +58,7 @@ int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_
     DF |= desp;//Encender los bits del desplazamiento
 
     return DF;
-    
+
 }
 
 void print_table(tabla t, unsigned int size){
@@ -82,7 +81,7 @@ void print_table_binary(tabla t, unsigned int size, unsigned int marco_size, int
     }else{
         printf("|i|\t|A|R|M|P|C|FRAME_BINARY|\n\n");
     }
-    
+
     for(int i = 0; i < size; i++){
         printf("|%d|\t|%d|%d|%d|%d|%d",
             i,
@@ -112,7 +111,7 @@ void print_especific_table(tabla t, unsigned int index){
         t[index].b_cache,
         t[index].n_frame);
 
-    
+
 }
 
 void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_marco){
@@ -144,13 +143,13 @@ unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned i
 
     /* printf("Size bits: %lu frame_mask: %lu\n", size_bits, frame_mask);
  */
-    binary |= (t[index].b_permiso & 1UL) << 4; 
-    binary |= (t[index].b_ref & 1UL) << 3;    
-    binary |= (t[index].b_mod & 1UL) << 2;     
+    binary |= (t[index].b_permiso & 1UL) << 4;
+    binary |= (t[index].b_ref & 1UL) << 3;
+    binary |= (t[index].b_mod & 1UL) << 2;
     binary |= (t[index].b_pres_aus & 1UL) << 1;
-    binary |= (t[index].b_cache & 1UL) << 0;   
+    binary |= (t[index].b_cache & 1UL) << 0;
     binary <<= size_bits; // Shift the bits size bits
-    
+
     binary |= (t[index].n_frame & frame_mask) << 0; // Set the remaining bits for n_frame
 
 
