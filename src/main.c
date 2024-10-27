@@ -34,26 +34,6 @@ void printBinary(unsigned int num, int bits_to_print) {
     printf("\n");
 }
 
-void printBinary_Lemisora(unsigned int num) {
-    unsigned int mask = 1 << 31;  // Comenzamos con el bit más significativo
-    int printed = 0;
-
-    while (mask) {
-        if (num & mask) {
-            printf("1");
-            printed = 1;
-        } else if (printed) {
-            printf("0");
-        }
-        mask >>= 1;  // Desplazamos la máscara hacia la derecha
-    }
-
-    if (!printed) {
-        printf("0");  // Si el número es 0
-    }
-    printf("\n");
-}
-
 void solicitaDatos(unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
     printf("Ingrese el tamaño de página que desea: ");
     scanf("%u", tam_pag);
@@ -70,7 +50,7 @@ void printMenu(){
     if(!table_generated){
         printf("Tabla de páginas sin generar\n\n");
     } else if(table_generated && !table_loaded){
-        printf("Tabla generada, ¡cárgela para poder usarla!\n\n");
+        printf("Tabla generada, ¡cárguela para poder usarla!\n\n");
     } else if(table_generated && table_loaded){
         printf("Tabla cargada, puede usarla\n\n");
     }
@@ -84,7 +64,6 @@ void printMenu(){
 }
 
 int main(int argc, char** argv){
-
     if(argc < 2){
         printf("Uso traductor <nombre_archivo.txt>\n");
         return (EXIT_FAILURE);
@@ -94,12 +73,12 @@ int main(int argc, char** argv){
     tabla page_table = NULL;
     char binaryString[33];
 
-    unsigned int num_pag = 0;
-    unsigned int num_marcos = 0;
-    unsigned int tam_pag = 0;
-    unsigned int bits_desp = 0;
-    unsigned int DV = 0;
-    unsigned int DF = 0;
+    unsigned int num_pag = 0;       //Variable para almacenar el número de página
+    unsigned int num_marcos = 0;    //Variable para almacenar el número de marco
+    unsigned int tam_pag = 0;       //Variable para almacenar el tamaño de página
+    unsigned int bits_desp = 0;     //Variable para almacenar el número de bits de desplazamiento
+    unsigned int DV = 0;            //Variable para almacenar la dirección virtual
+    unsigned int DF = 0;            //Variable para almacenar la dirección física
 
     int opc;
     unsigned int opc_num_pag = 0;
@@ -153,15 +132,15 @@ int main(int argc, char** argv){
                 printf("¡Primero necesita cargar la tabla de páginas!\n");
                 continue;
             } else {
-                printf("Ingrese la dirección virtual: ");
+                printf("Ingrese la dirección virtual (debe ingresarla en base 2): ");
                 scanf("%32s", binaryString);
-                DV = strtoul(binaryString, NULL, 2);
+                DV = strtoul(binaryString, NULL, 2);    //Convertir la dirección virtual de base 2 a base 10
                 printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
-                printBinary(DV, (int) log2(tam_pag*num_pag));
+                printBinary(DV, (int) log2(tam_pag*num_pag));   //Imprimir la dirección
                 bits_desp = (unsigned int) log2(tam_pag);
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
                 printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                printBinary_Lemisora(DF);
+                printBinary(DF, (int)log2(tam_pag*num_marcos));
             }
         }
         else if(opc == 5){
@@ -177,12 +156,7 @@ int main(int argc, char** argv){
                     continue;
                 } else {
                     DV = opc_num_pag << bits_desp;
-                    // printf("Direccion Virtual: %u \nEn hexadecimal: 0x%X\n En Binario: ", opc_num_pag, opc_num_pag);
-                    // printBinary(opc_num_pag, (int) log2(tam_pag*num_pag));
-
                     DF = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
-                    // printf("\n\nDirección Fisica\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                    // printBinary(DF, (int) log2(num_marcos * pow(2, 5)));
                     print_specific_table_binary(page_table, opc_num_pag, num_marcos);
                 }
             }
