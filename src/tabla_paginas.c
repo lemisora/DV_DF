@@ -93,7 +93,7 @@ void print_table_binary(tabla t, unsigned int size, unsigned int marco_size, int
         print_binary(t[i].n_frame, marco_size);
 
         if(print_decimal){
-            printf("|\t|%u", t[i].n_frame);
+            printf("|%17s|%u", "", t[i].n_frame);
         }
 
         printf("|\n");
@@ -114,7 +114,7 @@ void print_especific_table(tabla t, unsigned int index){
 }
 
 void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_marco){
-    printf("|A|R|M|P|C|FRAME_Binary|\n");
+    printf("|A|R|M|P|C|FRAME_BINARY|\n");
     printf("|%d|%d|%d|%d|%d",
         t[index].b_permiso,
         t[index].b_ref,
