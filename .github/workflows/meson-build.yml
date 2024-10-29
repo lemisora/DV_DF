@@ -21,3 +21,10 @@ jobs:
         - name: Run tests
           run: |
             echo -e "1\n32\n16\n8\n2\n3\n4\n185\n5\n15\n0" | ./out/traductor entrada.txt
+        - name: Upload traductor and entrada.txt
+          uses: actions/upload-artifact@v4
+          with:
+            name: build-artifacts
+            path: |
+                out/traductor
+                entrada.txt
