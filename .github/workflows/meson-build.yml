@@ -21,3 +21,14 @@ jobs:
         - name: Run tests
           run: |
             ./out/traductor entrada.txt
+            1
+            32
+            16
+            8
+            2
+            3
+            4
+            185
+            5
+            15
+            0
