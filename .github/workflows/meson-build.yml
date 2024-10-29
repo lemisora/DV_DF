@@ -20,15 +20,4 @@ jobs:
             meson compile -C out
         - name: Run tests
           run: |
-            ./out/traductor entrada.txt
-            1
-            32
-            16
-            8
-            2
-            3
-            4
-            185
-            5
-            15
-            0
+            echo -e "1\n32\n16\n8\n2\n3\n4\n185\n5\n15\n0" | ./out/traductor entrada.txt
