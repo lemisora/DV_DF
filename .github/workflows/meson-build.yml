@@ -24,13 +24,13 @@ jobs:
         - name: Run tests
           run: |
             echo -e "1\n32\n16\n8\n2\n3\n4\n185\n5\n15\n0" | ./out/traductor entrada.txt
-        - name: Upload traductor and entrada.txt
-          uses: actions/upload-artifact@v4
-          with:
-            name: build-artifacts
-            path: |
-                out/traductor
-                entrada.txt
+        #- name: Upload traductor and entrada.txt
+          #uses: actions/upload-artifact@v4
+          #with:
+            #name: build-artifacts
+            #path: |
+                #out/traductor
+                #entrada.txt
     upload:
       # Upload to releases
         name: Upload Artifact to Releases
@@ -41,7 +41,7 @@ jobs:
             uses: actions/checkout@v4
           # Genera el archivo CHANGELOG
           - name: Generate Binaries Again
-            uses: actions/setup-python@v2
+            uses: actions/setup-python@v5
           - name: Install and build with Meson
             run: |
               pip install meson ninja
@@ -52,7 +52,7 @@ jobs:
           # Publica el release
           - name: Release
             uses: softprops/action-gh-release@v2
-            if: startsWith(github.ref, 'refs/tags/')
+            #if: startsWith(github.ref, 'refs/tags/')
             with:
               body_path: ${{ github.workspace }}-CHANGELOG.txt
               repository: my_gh_org/my_gh_repo
