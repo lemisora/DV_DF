@@ -24,10 +24,6 @@ bool table_loaded = false;
     |b_permiso|b_ref|b_mod|b_pres_aus|b_cache|No. marco|
 */
 
-void printMemoryInformation(unsigned int direccion_virtual){
-    printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn Octal: %o\nEn binario: ", direccion_virtual, direccion_virtual, direccion_virtual);
-}
-
 void printBinary(unsigned int num, int bits_to_print) {
     for (int i = bits_to_print - 1; i >= 0; i--) {
         if (i % 4 == 3 && i != bits_to_print - 1){
@@ -75,8 +71,7 @@ int main(int argc, char** argv){
 
     FILE* archivo = NULL;
     tabla page_table = NULL;
-    /* char binaryString[33];
-    unsigned int page_to_search = 0;       //Variable para almacenar el número de página */
+    char binaryString[33];
 
     unsigned int num_pag = 0;       //Variable para almacenar el número de página
     unsigned int num_marcos = 0;    //Variable para almacenar el número de marco
@@ -137,25 +132,18 @@ int main(int argc, char** argv){
                 printf("¡Primero necesita cargar la tabla de páginas!\n");
                 continue;
             } else {
-                printf("Ingrese la dirección virtual (debe ingresarla en base 10): ");
-                scanf("%u", &DV);
-                if (DV >= num_pag*tam_pag){
-                    printf("Número de página inválido\n");
-                    continue;
-                }
-                
-                // DV = strtoul(binaryString, NULL, 2);    //Convertir la dirección virtual de base 2 a base 10
-                // printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
-                printMemoryInformation(DV);
+                printf("Ingrese la dirección virtual (debe ingresarla en base 2): ");
+                scanf("%32s", binaryString);
+                DV = strtoul(binaryString, NULL, 2);    //Convertir la dirección virtual de base 2 a base 10
+                printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
                 printBinary(DV, (int) log2(tam_pag*num_pag));   //Imprimir la dirección
                 bits_desp = (unsigned int) log2(tam_pag);
                 DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
-                //printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                
-                printMemoryInformation(DF);
+                printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
                 printBinary(DF, (int)log2(tam_pag*num_marcos));
-                }
-            } else if(opc == 5){
+            }
+        }
+        else if(opc == 5){
             printf("------------ Imprimir una Pagina ------------\n");
             if(!table_loaded){
                 printf("¡Primero necesita cargar la tabla de páginas!\n");
@@ -172,14 +160,13 @@ int main(int argc, char** argv){
                     print_specific_table_binary(page_table, opc_num_pag, num_marcos);
                 }
             }
-        } 
-        else{
+        }else{
             printf("Opción inválida\n¡Inténtelo nuevamente!\n");
         }
     }
 
     if(page_table != NULL){
-        // printf("Liberando memoria\n");
+        printf("Liberando memoria\n");
         free(page_table);
     }
     return EXIT_SUCCESS;
