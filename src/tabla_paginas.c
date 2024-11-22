@@ -33,7 +33,10 @@ unsigned int getMarco(tabla t, unsigned int index){
     return frame;
 }
 
-int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV){
+n_page_df translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV){
+    
+    n_page_df temp;
+    
     unsigned int DF = 0;    //Dirección física
     unsigned int DV_TEMP = DV;  //Variable auxiliar para tratar con bits
     unsigned int mask = 0;  //Máscara
@@ -56,7 +59,10 @@ int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_
     DF = n_marco << bits_desp;//Colocar el valor del marco en las posiciones correctas con corrimiento
     DF |= desp;//Encender los bits del desplazamiento
 
-    return DF;
+    temp.DF = DF;
+    temp.num_page = n_pag;
+    
+    return temp;
 
 }
 

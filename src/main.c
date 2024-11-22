@@ -143,17 +143,28 @@ int main(int argc, char** argv){
                     printf("Número de página inválido\n");
                     continue;
                 }
-                
+
                 // DV = strtoul(binaryString, NULL, 2);    //Convertir la dirección virtual de base 2 a base 10
-                // printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
-                printMemoryInformation(DV);
+                printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
+                //printMemoryInformation(DV);
                 printBinary(DV, (int) log2(tam_pag*num_pag));   //Imprimir la dirección
                 bits_desp = (unsigned int) log2(tam_pag);
-                DF = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
-                //printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
-                
-                printMemoryInformation(DF);
+
+                n_page_df temp;
+
+                temp = translateVD_PD(page_table, tam_pag, num_pag, num_marcos, bits_desp, DV);
+
+
+                DF = temp.DF;
+                int temp_num_pag = temp.num_page;
+
+                //printMemoryInformation(DF);
+                printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
                 printBinary(DF, (int)log2(tam_pag*num_marcos));
+                printf("\nNúmero de página: %u\n\n"
+                    "Información de la entrada de tabla de páginas\n", temp_num_pag);
+                print_specific_table_binary(page_table, temp_num_pag, num_marcos);
+
                 }
             } else if(opc == 5){
             printf("------------ Imprimir una Pagina ------------\n");
@@ -168,11 +179,11 @@ int main(int argc, char** argv){
                     continue;
                 } else {
                     DV = opc_num_pag << bits_desp;
-                    DF = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
+                    //DF = binary_especific_table(page_table, opc_num_pag, num_marcos, tam_pag);
                     print_specific_table_binary(page_table, opc_num_pag, num_marcos);
                 }
             }
-        } 
+        }
         else{
             printf("Opción inválida\n¡Inténtelo nuevamente!\n");
         }

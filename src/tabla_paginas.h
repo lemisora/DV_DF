@@ -6,6 +6,13 @@
 typedef struct entrada table_entry_t;
 typedef table_entry_t* tabla;
 
+typedef struct page_num n_page_df;
+
+struct page_num{
+    unsigned int DF;
+    unsigned int num_page;
+};
+
 struct entrada{
     int b_permiso;  //Permiso de lectura/escritura, 0 solo lectura, 1 lectura/escritura
     int b_ref;      //0 no accedida recientemente, 1 accedida recientemente
@@ -28,7 +35,7 @@ int init_table(FILE* file, tabla* tabla_paginas, unsigned int size, unsigned int
 unsigned int getMarco(tabla t, unsigned int index);
 
 //Función para traducir dirección virtual al física
-int translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV);
+n_page_df translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV);
 
 //Función para imprimir la tabla de páginas
 void print_table(tabla t, unsigned int size);
