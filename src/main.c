@@ -145,7 +145,8 @@ int main(int argc, char** argv){
                 }
 
                 // DV = strtoul(binaryString, NULL, 2);    //Convertir la dirección virtual de base 2 a base 10
-                printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DV, DV);
+                printf("\nDirección virtual\nEn decimal: %u \nEn hexadecimal: 0x%X \n"
+                    "En octal: %o\nEn binario: ", DV, DV, DV);
                 //printMemoryInformation(DV);
                 printBinary(DV, (int) log2(tam_pag*num_pag));   //Imprimir la dirección
                 bits_desp = (unsigned int) log2(tam_pag);
@@ -159,7 +160,8 @@ int main(int argc, char** argv){
                 int temp_num_pag = temp.num_page;
 
                 //printMemoryInformation(DF);
-                printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X \nEn binario: ", DF, DF);
+                printf("\nDirección física\nEn decimal: %u \nEn hexadecimal: 0x%X"
+                    "\nEn octal: %o\nEn binario: ", DF, DF, DF);
                 printBinary(DF, (int)log2(tam_pag*num_marcos));
                 printf("\nNúmero de página: %u\n\n"
                     "Información de la entrada de tabla de páginas\n", temp_num_pag);
