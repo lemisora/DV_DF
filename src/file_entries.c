@@ -29,7 +29,7 @@ void leer(FILE* file, tabla* t, unsigned int size, unsigned int* tam_pag, unsign
         b_mod = (num >> (desp+2)) & 1;
         b_pres_aus = (num >> (desp+1)) & 1;
         b_cache = (num >> (desp)) & 1;
-        n_frame = num & desp;
+        n_frame = num & ((1 << desp)-1);
         table_entry_t temp = {
                                    .b_permiso = b_permiso,
                                    .b_ref = b_ref,
