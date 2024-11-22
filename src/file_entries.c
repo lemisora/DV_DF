@@ -24,11 +24,11 @@ void leer(FILE* file, tabla* t, unsigned int size, unsigned int* tam_pag, unsign
         // fscanf(file, "%d %d %d %d %d %u", &b_permiso, &b_ref, &b_mod, &b_pres_aus, &b_cache, &n_frame);
         fscanf(file, "%u", &num);
         //num = (b_permiso << (desp+5)) | (b_ref << (desp+4)) | (b_mod << (desp+3)) | (b_pres_aus << (desp+2)) | (b_cache << (desp+1)) | n_frame;
-        b_permiso = (num >> (desp+5)) & 1;
-        b_ref = (num >> (desp+4)) & 1;
-        b_mod = (num >> (desp+3)) & 1;
-        b_pres_aus = (num >> (desp+2)) & 1;
-        b_cache = (num >> (desp+1)) & 1;
+        b_permiso = (num >> (desp+4)) & 1;
+        b_ref = (num >> (desp+3)) & 1;
+        b_mod = (num >> (desp+2)) & 1;
+        b_pres_aus = (num >> (desp+1)) & 1;
+        b_cache = (num >> (desp)) & 1;
         n_frame = num & desp;
         table_entry_t temp = {
                                    .b_permiso = b_permiso,

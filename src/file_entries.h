@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 
+
 //Función para leer los datos de la primera línea del archivo que contienen información de la tabla
 void leer_primera_linea(FILE* file, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos);
 
