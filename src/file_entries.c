@@ -8,11 +8,11 @@ void leer_primera_linea(FILE* file, unsigned int* tam_pag, unsigned int* num_pag
 }
 
 void leer(FILE* file, tabla* t, unsigned int size, unsigned int* tam_pag, unsigned int* num_pag, unsigned int* num_marcos){
-    int b_permiso = 0;
     int b_ref = 0;
     int b_mod = 0;
-    int b_pres_aus = 0;
+    int b_permiso = 0;
     int b_cache = 0;
+    int b_pres_aus = 0;
 
     unsigned int num = 0;
     unsigned int n_frame = 0;
@@ -21,22 +21,21 @@ void leer(FILE* file, tabla* t, unsigned int size, unsigned int* tam_pag, unsign
     fscanf(file, "%*s %u %*s %u %*s %u", tam_pag, num_pag, num_marcos);
 
     for(int i = 0; i < size; i++){
-        // fscanf(file, "%d %d %d %d %d %u", &b_permiso, &b_ref, &b_mod, &b_pres_aus, &b_cache, &n_frame);
         fscanf(file, "%u", &num);
-        //num = (b_permiso << (desp+5)) | (b_ref << (desp+4)) | (b_mod << (desp+3)) | (b_pres_aus << (desp+2)) | (b_cache << (desp+1)) | n_frame;
-        b_permiso = (num >> (desp+4)) & 1;
-        b_ref = (num >> (desp+3)) & 1;
-        b_mod = (num >> (desp+2)) & 1;
-        b_pres_aus = (num >> (desp+1)) & 1;
-        b_cache = (num >> (desp)) & 1;
+        b_ref = (num >> (desp+4)) & 1;
+        b_mod = (num >> (desp+3)) & 1;
+        b_permiso = (num >> (desp+2)) & 1;
+        b_cache = (num >> (desp+1)) & 1;
+        b_pres_aus = (num >> (desp)) & 1;
         n_frame = num & ((1 << desp)-1);
         table_entry_t temp = {
-                                   .b_permiso = b_permiso,
                                    .b_ref = b_ref,
                                    .b_mod = b_mod,
-                                   .b_pres_aus = b_pres_aus,
+                                   .b_permiso = b_permiso,
                                    .b_cache = b_cache,
-                                   .n_frame = n_frame
+                                   .b_pres_aus = b_pres_aus,
+                                   .n_frame = n_frame,
+                                   .raw_entry = num
                              };
         add_entry(*t, temp, i);
     }

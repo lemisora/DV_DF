@@ -18,12 +18,10 @@ int init_table(FILE* file, tabla* tabla_paginas, unsigned int size, unsigned int
     *tabla_paginas = (tabla)malloc(sizeof(table_entry_t)*size);
     if(tabla_paginas == NULL){
         perror("No se pudo reservar memoria para la tabla de páginas");
-        //fclose(file);
         return EXIT_FAILURE;
     }
     /* Añadir entradas */
     leer(file, tabla_paginas, size, tam_pag, num_pag, num_marcos);
-    //fclose(file);
     return EXIT_SUCCESS;
 }
 
@@ -33,10 +31,14 @@ unsigned int getMarco(tabla t, unsigned int index){
     return frame;
 }
 
+int get_b_pres_aus(tabla t, unsigned int n_page){
+    int b_pres_aus = t[n_page].b_pres_aus;
+    return b_pres_aus;
+}
+
 n_page_df translateVD_PD(tabla t, const int tam_pag, const int num_pag, const int num_marcos, const int bits_desp, unsigned int DV){
-    
     n_page_df temp;
-    
+
     unsigned int DF = 0;    //Dirección física
     unsigned int DV_TEMP = DV;  //Variable auxiliar para tratar con bits
     unsigned int mask = 0;  //Máscara
@@ -47,6 +49,13 @@ n_page_df translateVD_PD(tabla t, const int tam_pag, const int num_pag, const in
     //Averiguando el número de página de la D.V.
     DV_TEMP >>= bits_desp;//Se eliminan los bits del desplazamientoo
     n_pag = DV_TEMP;
+
+    printf("\nNúmero de página: %u\n", n_pag);
+
+    if(!get_b_pres_aus(t, n_pag)){
+        temp.estado = 0;    //Estado fallido, por fallo de página
+        return temp;
+    }
 
     //Averiguando el valor de desplazamiento
     DV_TEMP <<= bits_desp;//Se colocan los bits de número de página en su lugar original
@@ -61,40 +70,26 @@ n_page_df translateVD_PD(tabla t, const int tam_pag, const int num_pag, const in
 
     temp.DF = DF;
     temp.num_page = n_pag;
-    
+    temp.estado = 1;    //Estado exitoso
     return temp;
-
 }
 
-void print_table(tabla t, unsigned int size){
-    printf("|A|R|M|P|C|FRAME|\n");
-    for(int i = 0; i < size; i++){
-        printf("|%d|%d|%d|%d|%d|%u|\n",
-            t[i].b_permiso,
-            t[i].b_ref,
-            t[i].b_mod,
-            t[i].b_pres_aus,
-            t[i].b_cache,
-            t[i].n_frame);
-    }
-}
-
-void print_table_binary(tabla t, unsigned int size, unsigned int marco_size, int print_decimal){
+void print_table(tabla t, unsigned int size, unsigned int marco_size, int print_decimal){
     if (print_decimal)
     {
-        printf("|i|\t|A|R|M|P|C|FRAME_BINARY|\t|FRAME_DECIMAL|\n\n");
+        printf("|i|\t|R|M|A|C|P|FRAME_BINARY|\t|FRAME_DECIMAL|\n\n");
     }else{
-        printf("|i|\t|A|R|M|P|C|FRAME_BINARY|\n\n");
+        printf("|i|\t|R|M|A|C|P|FRAME_BINARY|\n\n");
     }
 
     for(int i = 0; i < size; i++){
         printf("|%d|\t|%d|%d|%d|%d|%d",
             i,
-            t[i].b_permiso,
             t[i].b_ref,
             t[i].b_mod,
-            t[i].b_pres_aus,
-            t[i].b_cache);
+            t[i].b_permiso,
+            t[i].b_cache,
+            t[i].b_pres_aus);
         printf("|");
         print_binary(t[i].n_frame, marco_size);
 
@@ -106,27 +101,15 @@ void print_table_binary(tabla t, unsigned int size, unsigned int marco_size, int
     }
 }
 
-void print_especific_table(tabla t, unsigned int index){
-    printf("|A|R|M|P|C|FRAME|\n");
-    printf("|%d|%d|%d|%d|%d|%u|\n",
-        t[index].b_permiso,
-        t[index].b_ref,
-        t[index].b_mod,
-        t[index].b_pres_aus,
-        t[index].b_cache,
-        t[index].n_frame);
-
-
-}
-
 void print_specific_table_binary(tabla t, unsigned int index, unsigned int size_marco){
-    printf("|A|R|M|P|C|FRAME_BINARY|\n");
+    printf("Contenido: %u\n", t[index].raw_entry);
+    printf("\n|R|M|A|C|P|FRAME_BINARY|\n");
     printf("|%d|%d|%d|%d|%d",
-        t[index].b_permiso,
         t[index].b_ref,
         t[index].b_mod,
-        t[index].b_pres_aus,
-        t[index].b_cache);
+        t[index].b_permiso,
+        t[index].b_cache,
+        t[index].b_pres_aus);
     printf("|");
     print_binary(t[index].n_frame, size_marco);
     printf("|\n");
@@ -139,24 +122,4 @@ void print_binary(unsigned long int value, unsigned int page_size) {
         }
         printf("%lu", (value >> i) & 1UL);
     }
-}
-
-unsigned long int binary_especific_table(tabla t, unsigned int index, unsigned int marco_size, unsigned int page_size){
-    unsigned long int binary = 0;
-    unsigned long int size_bits = (unsigned int)log2(marco_size);
-    unsigned long int frame_mask = (1UL << size_bits) - 1; // Create a mask with size_bits number of 1s
-
-    /* printf("Size bits: %lu frame_mask: %lu\n", size_bits, frame_mask);
- */
-    binary |= (t[index].b_permiso & 1UL) << 4;
-    binary |= (t[index].b_ref & 1UL) << 3;
-    binary |= (t[index].b_mod & 1UL) << 2;
-    binary |= (t[index].b_pres_aus & 1UL) << 1;
-    binary |= (t[index].b_cache & 1UL) << 0;
-    binary <<= size_bits; // Shift the bits size bits
-
-    binary |= (t[index].n_frame & frame_mask) << 0; // Set the remaining bits for n_frame
-
-
-    return binary;
 }
