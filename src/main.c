@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SET_RED_PRINTF printf("\033[31m");
+#define RESET_PRINTF printf("\033[0m");
+
 bool table_generated = false;
 bool table_loaded = false;
 
@@ -92,7 +95,7 @@ int main(int argc, char **argv) {
       printf("Saliendo del programa\n");
       break;
     } else if (opc == 1) {
-      printf("------------ Generación de entradas ------------\n");
+      printf("\n------------ Generación de entradas ------------\n");
       solicitaDatos(&tam_pag, &num_pag, &num_marcos);
       archivo = fopen(argv[1], "w");
       if (archivo != NULL) {
@@ -103,7 +106,7 @@ int main(int argc, char **argv) {
                "generadas\n");
       }
     } else if (opc == 2) {
-      printf("------------ Carga de tabla ------------\n");
+      printf("\n------------ Carga de tabla ------------\n");
       archivo = fopen(argv[1], "r");
       if (archivo == NULL) {
         perror("Error al abrir el archivo del que se cargará la tabla, "
@@ -157,7 +160,9 @@ int main(int argc, char **argv) {
                               bits_desp, DV);
 
         if (temp.estado == 0) {
-          printf("\nFallo de página\n");
+            SET_RED_PRINTF
+          printf("\n>>>> Fallo de página <<<<\n");
+          RESET_PRINTF
           continue;
         }
 
