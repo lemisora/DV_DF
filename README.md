@@ -1,12 +1,63 @@
 # Traductor de Dirección Virtual a Física
 - Este programa mostrará la dirección física resultante de acuerdo a la dirección virtual proporcionada
-
 - Se define desde un archivo el número de páginas y el número de marcos
 - Los elementos de la tabla de páginas se encuentran en el mismo archivo
+- Inicialmente sedebe de cargar el archivo al que se van a generar entradas o del que se van a cargar
+- Una vez cargado ya podrás acceder a las funcionalidades de traducción, deberás ingresar los datos solicitados
+  - Ejemplo de salida del programa:
+  ```bash
+  Ingrese la dirección virtual (debe ingresarla en base 10): 192
 
+  Dirección virtual
+  En decimal: 192
+  En hexadecimal: 0xC0
+  En octal: 300
+  En binario: 000 1100 0000
 
+  Número de página: 3
+
+  Dirección física
+  En decimal: 448
+  En hexadecimal: 0x1C0
+  En octal: 700
+  En binario: 1 1100 0000
+
+  Información de la entrada de tabla de páginas
+  Contenido: 159
+
+  |R|M|A|C|P|FRAME_BINARY|
+  |1|0|0|1|1|111|
+  ```
+- El ejemplo anterior muestra como se vería el caso en el que se haya dado una dirección que corresponda a una entrada válida en "dirección física"
+- A continuación se muestra que es lo que sale cuando la entrada proporcionada no está en memoria física (ocurre un fallo de página)
+
+```bash
+Estado del programa: Tabla cargada, puede usarla
+
+1. Generar tabla de páginas
+2. Cargar tabla de páginas
+3. Imprimir tabla de páginas
+4. Traducir dirección virtual a física
+5. Imprimir entrada específica de tabla de páginas
+0. Salir
+Ingrese la opción que desea: 4
+
+------------ Traducción de direcciones ------------
+Ingrese la dirección virtual (debe ingresarla en base 10): 150
+
+Dirección virtual
+En decimal: 150
+En hexadecimal: 0x96
+En octal: 226
+En binario: 000 1001 0110
+
+Número de página: 2
+
+>>>> Fallo de página <<<<
+```
 ## Comandos para instalar (Linux)
-Instalar meson como sea posible considerando que sea la ultima version**Ultima version Usada 1.5.1**
+Instalar meson como sea posible considerando que sea la ultima version
+- **Ultima version Usada 1.5.1**
 ```bash
 pip install meson
 ```
